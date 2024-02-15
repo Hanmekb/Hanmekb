@@ -25,11 +25,11 @@
 <script type="module">
     import {posiColor} from './modules/posiColor.js';
 
-    let data,
-        //urlData = "http://localhost/samszo/HDR/docs/assets/data/complexityFrequency.json",
-        urlData = "data/fr-en-evaluations_nationales_6eme_region.csv",
+    let data, 
+        //urlData ="http://localhost/samszo/HDR/docs/assets/data/complexityFrequency.json",
+        urlData = "Donnees.csv",
         width = 600, height=600, widthLibTxt=120, svg,  
-        valX='Score moyen',valGroupe='Matière',valY='Ecart type', valLibCercle = 'Région académique',
+        valX='ANNEES',valGroupe='PATIENTS',valY='GENS',
         bandY,
         interpolates = false,
         toolTip = d3.select("#toolTip");
@@ -128,7 +128,7 @@
                 .attr("font-size","smaller")
                 .attr("text-anchor","middle")
                 .text(d=>d[valLibCercle].substring(0,1));
-           
+            
     }
     function showToolTip(e,d){
         toolTip.style('display','block');
@@ -142,4 +142,3 @@
 
 </script>
 </html>
-    
