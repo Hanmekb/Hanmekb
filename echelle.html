@@ -26,10 +26,10 @@
     import {posiColor} from './modules/posiColor.js';
 
     let data, 
-        //urlData = "http://localhost/samszo/HDR/docs/assets/data/complexityFrequency.json",
+        //urlData = "<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRzXytoTL6Pa4b0EXcSC_C68wWpTpax9IxbhWGfFCFQUhl-C8mkMdUlvmBP0nBuPDpL4zhhyJ9_u3jX/pubhtml?widget=true&amp;headers=false"></iframe>",
         urlData = "data/fr-en-evaluations_nationales_6eme_region.csv",
         width = 600, height=600, widthLibTxt=120, svg,  
-        valX='Score moyen',valGroupe='Matière',valY='Ecart type', valLibCercle = 'Région académique',
+        valX='ANNEE',valGroupe='N PATIENTS',valY='HOMME', valLibCercle = 'FEMME',
         bandY,
         interpolates = false,
         toolTip = d3.select("#toolTip");
