@@ -25,11 +25,11 @@
 <script type="module">
     import {posiColor} from './modules/posiColor.js';
 
-    let data,
-        //urlData = "https://raw.githubusercontent.com/Fmezine/echelles/main/Base%20de%20donnes%20de%20mon%20projet%20%20-%20biotronik.csv",
+    let data, 
+        //urlData ="https://docs.google.com/spreadsheets/d/e/2PACX-1vRzXytoTL6Pa4b0EXcSC_C68wWpTpax9IxbhWGfFCFQUhl-C8mkMdUlvmBP0nBuPDpL4zhhyJ9_u3jX/pubhtml?widget=true&amp;headers=false",
         urlData = "data/fr-en-evaluations_nationales_6eme_region.csv",
         width = 600, height=600, widthLibTxt=120, svg,  
-          valX='nb',valGroupe='genre',valY='ANNEE',
+        valX='ANNEE',valGroupe='PATIENTS',valY='HOMME', valLibCercle = 'FEMME',
         bandY,
         interpolates = false,
         toolTip = d3.select("#toolTip");
@@ -50,20 +50,14 @@
         setAxis(data);
     })
 
-   
     function setData(rs){
-        data = [];
-        rs.forEach(d=>{
-            data.push({'genre':'HOMME','nbTot':d['N PATIENTS'],'nb':d.HOMME, 'ANNEE':d.ANNEE});
-            data.push({'genre':'FEMME','nbTot':d['N PATIENTS'],'nb':d.FEMME, 'ANNEE':d.ANNEE});
-        })
-        data = Array.from(d3.group(data, d => d[valGroupe]));
+        data = Array.from(d3.group(rs, d => d[valGroupe]));
         //création de l'échelle par bandes
         //cf. https://observablehq.com/@d3/d3-scaleband
         bandY = d3.scaleBand(data.map(d=>d[0]), [0, height]).paddingInner(0.2).paddingOuter(0.2);
         data = data.map(d=>{
-                    let extX = d3.extent(d[1], d=>Number(d[valX])),
-                        extY = d3.extent(d[1], d=>Number(d[valY])),
+                    let extX = d3.extent(d[1], d=>d[valX]),
+                        extY = d3.extent(d[1], d=>d[valY]),
                         o = {'vals':d[1],
                         'extX':[1,extX[1]],                        
                         //'scX':d3.scaleSymlog().domain(extX).range([widthLibTxt, width-widthLibTxt]),
@@ -71,7 +65,8 @@
                         //'scX':d3.scaleLog().domain(extX).range([widthLibTxt, width-widthLibTxt]),
                         //'scY':d3.scaleLog().domain(extY).range([0, bandY.bandwidth()])                        
                         'scX':d3.scaleLinear().domain(extX).range([widthLibTxt, width-widthLibTxt]),
-                        'scY':d3.scaleLinear().domain(extY).range([0, bandY.bandwidth()])
+                        'scY':d3.scaleLinear().domain(extY).range([0, bandY.bandwidth()]),
+                        'scColor':d3.scaleSequentialLog(extX, d3.interpolatePlasma)
                         };
                         o[valGroupe]=d[0];
                     return o;
@@ -133,7 +128,7 @@
                 .attr("font-size","smaller")
                 .attr("text-anchor","middle")
                 .text(d=>d[valLibCercle].substring(0,1));
-           
+            
     }
     function showToolTip(e,d){
         toolTip.style('display','block');
